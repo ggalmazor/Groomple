@@ -1,13 +1,12 @@
 package com.groomple
 
 import com.groomple.service.*
-
 import java.security.InvalidParameterException
 
 class Groomple implements Iterable {
 	Map services = [:]
 
-	public Iterator iterator() {
+	Iterator iterator() {
 		return services.iterator()
 	}
 
@@ -33,15 +32,15 @@ class Groomple implements Iterable {
 		return get(name)
 	}
 	
-	public void remove(String service) {
+	void remove(String service) {
 		services.remove service
 	}
 
-	public void share(String service, Closure callable) {
+	void share(String service, Closure callable) {
 		setProperty(service, new SharedService(callable))
 	}
 
-	public void protect(String service, Closure callable) {
+	void protect(String service, Closure callable) {
 		setProperty(service, new ProtectedService(callable))
 	}
 

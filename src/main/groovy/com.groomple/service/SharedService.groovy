@@ -1,7 +1,7 @@
 package com.groomple.service
 
 class SharedService {
-	private singleton
+	def singleton
 	Closure callable
 
 	SharedService(Closure callable) {
