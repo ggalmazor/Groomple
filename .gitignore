@@ -1,2 +1,6 @@
 .project
 bin
+.idea
+target
+Groomple.iml
+out
