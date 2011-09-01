@@ -1,35 +1,50 @@
 package com.groomple
 
 import com.groomple.service.*
-import java.security.InvalidParameterException
 
 class Groomple implements Iterable {
-	Map services = [:]
+	def services = [:]
 
 	Iterator iterator() {
 		return services.iterator()
 	}
 
-	def get(String name) {
+	def getService(String name) {
 		if (!services.containsKey(name))
-			throw new InvalidParameterException("Service ${name} is not defined")
+			throw new UnknownServiceException("Service ${name} is not defined")
 		return isCallable(services[name]) ? services[name]() : services[name]
 	}
 
+	// Groovy needs this method to be able to manage
+	// services as if they were object fields
+	// (aka return container.service)
 	def getProperty(String name) {
-		get name
+		getService name
 	}
 
-	void set(String name, value) {
+	void setService(String name, value) {
 		services[name] = value
 	}
 
+	// Groovy needs this method to be able to manage
+	// services as if they were object fields
+	// (aka container.service = something)
 	void setProperty(String name, value) {
-		set name, value
+		setService name, value
+	}
+
+	void leftShift(serviceCollection) {
+		putAll(serviceCollection)
+	}
+
+	void putAll(serviceCollection) {
+		serviceCollection.each {
+			setService it.key, it.value
+		}
 	}
 
 	def invokeMethod(String name, args) {
-		return get(name)
+		return getService(name)
 	}
 	
 	void remove(String service) {
