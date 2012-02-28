@@ -3,12 +3,8 @@ package com.groomple
 import com.groomple.service.ProtectedService
 import com.groomple.service.SharedService
 
-class Groomple implements Iterable {
-  def services = [:]
-
-  Iterator iterator() {
-    return services.iterator()
-  }
+class Groomple {
+  @Delegate Map services = [:]
 
   def getService(String name) {
     if (!services.containsKey(name))
