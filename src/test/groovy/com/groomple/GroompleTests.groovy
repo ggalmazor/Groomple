@@ -2,10 +2,6 @@ package com.groomple
 
 import org.junit.Before
 import org.junit.Test
-import static org.hamcrest.CoreMatchers.not
-import static org.junit.Assert.assertThat
-import static org.hamcrest.CoreMatchers.instanceOfHelloWorldService
-import static org.hamcrest.CoreMatchers.instanceOfHelloWorldService
 
 class GroompleTests {
   def groomple
