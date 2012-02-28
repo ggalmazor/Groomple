@@ -1,60 +1,60 @@
 package com.groomple
 
-import com.groomple.service.ProtectedService
-import com.groomple.service.SharedService
+import com.groomple.stuff.ProtectedStuff
+import com.groomple.stuff.SharedStuff
 
 class Groomple {
-  @Delegate Map services = [:]
-  
-  def getService(String name) {
+  @Delegate Map bag = [:]
+
+  def get(String name) {
     if (!contains(name))
-      throw new UnknownServiceException("Service ${name} is not defined")
-    isCallable(services[name]) ? services[name].call() : services[name]
+      throw new UnknownStuffException("Stuff ${name} is not in the bag")
+    isCallable(bag[name]) ? bag[name].call() : bag[name]
   }
 
-  void setService(String name, value) {
-    services[name] = value
+  void set(String name, value) {
+    bag[name] = value
   }
 
   def getProperty(String name) {
-    getService name
+    get name
   }
 
   void setProperty(String name, value) {
-    setService name, value
+    set name, value
   }
 
-  void leftShift(services) {
-    putAll(services)
+  void leftShift(Map stuff) {
+    putAll(stuff)
   }
 
-  void putAll(services) {
-    services.each {
-      setService it.key, it.value
+  void putAll(Map<String, Object> stuff) {
+    stuff.each {
+      set it.key, it.value
     }
   }
 
   def invokeMethod(String name, args) {
-    return getService(name)
+    return get(name)
   }
 
-  void remove(String service) {
-    services.remove service
+  void remove(String stuff) {
+    bag.remove stuff
   }
 
-  void share(String service, Closure callable) {
-    setProperty(service, new SharedService(callable))
+  void share(String stuff, Closure callable) {
+    setProperty(stuff, new SharedStuff(callable))
   }
 
-  void protect(String service, Closure callable) {
-    setProperty(service, new ProtectedService(callable))
+  void protect(String stuff, Closure callable) {
+    setProperty(stuff, new ProtectedStuff(callable))
   }
 
   private boolean isCallable(object) {
-    object instanceof Closure || object instanceof SharedService || object instanceof ProtectedService
+    object instanceof Closure || object instanceof SharedStuff || object instanceof ProtectedStuff
   }
 
   private boolean contains(String stuff) {
-    services.containsKey stuff
+    bag.containsKey stuff
   }
 }

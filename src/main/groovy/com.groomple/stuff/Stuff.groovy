@@ -1,9 +1,9 @@
-package com.groomple.service
+package com.groomple.stuff
 
-abstract class Service {
+abstract class Stuff {
   protected Closure callable
 
-  Service(Closure callable) {
+  Stuff(Closure callable) {
     this.callable = callable
   }
 

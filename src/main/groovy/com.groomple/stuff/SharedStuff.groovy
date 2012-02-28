@@ -1,9 +1,9 @@
-package com.groomple.service
+package com.groomple.stuff
 
-class SharedService extends Service {
+class SharedStuff extends Stuff {
   private singleton
 
-  SharedService(Closure callable) {
+  SharedStuff(Closure callable) {
     super(callable)
   }
 

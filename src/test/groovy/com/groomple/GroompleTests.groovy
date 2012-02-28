@@ -4,113 +4,114 @@ import org.junit.Before
 import org.junit.Test
 
 class GroompleTests {
-  def groomple
+  Groomple groomple
 
   @Before
   void setUp() {
     groomple = new Groomple()
   }
 
-  @Test(expected = UnknownServiceException)
+  @Test(expected = UnknownStuffException)
   void throws_InvalidParameterException_when_trying_to_get_a_non_existant_property() {
-    groomple.helloWorld
+    groomple.someStuff
   }
 
   @Test
-  void returns_a_service_with_getService() {
-    groomple.helloWorld = { new HelloWorldService() }
-    assert groomple.getService('helloWorld').sayHello() == 'Hello World!'
+  void returns_stuff_with_getService() {
+    groomple.someStuff = { new SomeStuff() }
+    assert groomple.get('someStuff').foo() == SomeStuff.BAR
   }
 
   @Test
-  void returns_a_service_using_array_access() {
-    groomple.helloWorld = { new HelloWorldService() }
-    assert groomple['helloWorld'].sayHello() == 'Hello World!'
+  void returns_stuff_using_array_access() {
+    groomple.someStuff = { new SomeStuff() }
+    assert groomple['someStuff'].foo() == SomeStuff.BAR
   }
 
   @Test
-  void returns_a_service_as_if_it_was_a_field() {
+  void returns_stuff_as_if_it_was_a_field() {
     Groomple g = new Groomple()
-    g.helloWorld = { new HelloWorldService() }
-    assert g.helloWorld.sayHello() == 'Hello World!'
+    g.someStuff = { new SomeStuff() }
+    assert g.someStuff.foo() == SomeStuff.BAR
   }
 
   @Test
-  void sets_a_service_using_set() {
-    groomple.setService 'helloWorld', { new HelloWorldService() }
-    assert groomple.helloWorld.sayHello() == 'Hello World!'
+  void sets_stuff_using_set() {
+    groomple.set 'someStuff', { new SomeStuff() }
+    assert groomple.someStuff.foo() == SomeStuff.BAR
   }
 
   @Test
-  void sets_a_service_using_array_access() {
+  void sets_stuff_using_array_access() {
     Groomple g = new Groomple()
-    g['helloWorld'] = { new HelloWorldService() }
-    assert g.helloWorld.sayHello() == 'Hello World!'
+    g['someStuff'] = { new SomeStuff() }
+    assert g.someStuff.foo() == SomeStuff.BAR
   }
 
   @Test
-  void sets_a_service_as_if_it_was_a_field() {
-    groomple.helloWorld = { new HelloWorldService() }
-    assert groomple.helloWorld.sayHello() == 'Hello World!'
+  void sets_stuff_as_if_it_was_a_field() {
+    groomple.someStuff = { new SomeStuff() }
+    assert groomple.someStuff.foo() == SomeStuff.BAR
   }
 
-  @Test(expected = UnknownServiceException)
-  void removes_a_service() {
-    groomple.helloWorld = { new HelloWorldService() }
-    groomple.remove 'helloWorld'
-    groomple.helloWorld
-  }
-
-  @Test
-  void returns_different_instances_of_a_service_by_default() {
-    groomple.helloWorld = { new HelloWorldService() }
-    def helloWorld = groomple.helloWorld
-    def otherHelloWorld = groomple.helloWorld
-    assert helloWorld instanceof HelloWorldService
-    assert helloWorld != otherHelloWorld
+  @Test(expected = UnknownStuffException)
+  void removes_stuff() {
+    groomple.someStuff = { new SomeStuff() }
+    groomple.remove 'someStuff'
+    groomple.someStuff
   }
 
   @Test
-  void can_call_services_as_methods_of_the_container() {
-    groomple.helloWorld = { new HelloWorldService() }
-    def helloWorld = groomple.helloWorld()
-    assert helloWorld instanceof HelloWorldService
+  void returns_different_instances_of_stuff_by_default() {
+    groomple.someStuff = { new SomeStuff() }
+    def someStuff = groomple.someStuff
+    def otherHelloWorld = groomple.someStuff
+    assert someStuff instanceof SomeStuff
+    assert someStuff != otherHelloWorld
   }
 
   @Test
-  void can_flag_services_as_shared_or_singleton() {
+  void can_call_stuff_as_methods_of_the_container() {
+    groomple.someStuff = { new SomeStuff() }
+    def someStuff = groomple.someStuff()
+    assert someStuff instanceof SomeStuff
+  }
+
+  @Test
+  void can_flag_stuff_as_shared_or_singleton() {
     Groomple g = new Groomple()
-    g.share 'helloWorld', { new HelloWorldService() }
-    def helloWorld = g.helloWorld
-    def sameHelloWorld = g.helloWorld
-    assert helloWorld instanceof HelloWorldService
-    assert helloWorld == sameHelloWorld
+    g.share 'someStuff', { new SomeStuff() }
+    def someStuff = g.someStuff
+    def sameHelloWorld = g.someStuff
+    assert someStuff instanceof SomeStuff
+    assert someStuff == sameHelloWorld
   }
 
   @Test
-  void can_protect_service_against_execution_while_retrieving_it() {
-    groomple.protect 'helloWorld', { new HelloWorldService() }
-    def helloWorld = groomple.helloWorld
-    assert !(helloWorld instanceof HelloWorldService)
-    assert helloWorld instanceof Closure
+  void can_protect_stuff_against_execution_while_retrieving_it() {
+    groomple.protect 'someStuff', { new SomeStuff() }
+    def someStuff = groomple.someStuff
+    assert !(someStuff instanceof SomeStuff)
+    assert someStuff instanceof Closure
   }
 
   @Test
   void allows_putAll_operation() {
-    groomple.putAll([helloWorld: { new HelloWorldService() }, helloWorld2: { new HelloWorldService() }])
-    assert groomple.helloWorld.sayHello() == 'Hello World!'
-    assert groomple.helloWorld2.sayHello() == 'Hello World!'
+    groomple.putAll([someStuff: { new SomeStuff() }, someStuff2: { new SomeStuff() }])
+    assert groomple.someStuff.foo() == SomeStuff.BAR
+    assert groomple.someStuff2.foo() == SomeStuff.BAR
   }
 
   @Test
   void allows_leftShift_operation() {
-    groomple << [helloWorld: { new HelloWorldService() }]
-    assert groomple.helloWorld.sayHello() == 'Hello World!'
+    groomple << [someStuff: { new SomeStuff() }]
+    assert groomple.someStuff.foo() == SomeStuff.BAR
   }
 
-  private class HelloWorldService {
-    def sayHello() {
-      'Hello World!'
+  private class SomeStuff {
+    static BAR = 'bar'
+    def foo() {
+      BAR
     }
   }
 }
