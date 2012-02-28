@@ -9,7 +9,7 @@ class Groomple {
   def getService(String name) {
     if (!services.containsKey(name))
       throw new UnknownServiceException("Service ${name} is not defined")
-    return isCallable(services[name]) ? services[name]() : services[name]
+    isCallable(services[name]) ? services[name].call() : services[name]
   }
 
   // Groovy needs this method to be able to manage
