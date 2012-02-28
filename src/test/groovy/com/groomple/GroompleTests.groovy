@@ -111,4 +111,10 @@ class GroompleTests {
     groomple << [helloWorld: { new HelloWorldService() }]
     assert groomple.helloWorld.sayHello() == 'Hello World!'
   }
+
+  private class HelloWorldService {
+    def sayHello() {
+      'Hello World!'
+    }
+  }
 }
