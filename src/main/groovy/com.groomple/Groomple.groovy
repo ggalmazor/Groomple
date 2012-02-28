@@ -12,30 +12,24 @@ class Groomple {
     isCallable(services[name]) ? services[name].call() : services[name]
   }
 
-  // Groovy needs this method to be able to manage
-  // services as if they were object fields
-  // (aka return container.service)
-  def getProperty(String name) {
-    getService name
-  }
-
   void setService(String name, value) {
     services[name] = value
   }
 
-  // Groovy needs this method to be able to manage
-  // services as if they were object fields
-  // (aka container.service = something)
+  def getProperty(String name) {
+    getService name
+  }
+
   void setProperty(String name, value) {
     setService name, value
   }
 
-  void leftShift(serviceCollection) {
-    putAll(serviceCollection)
+  void leftShift(services) {
+    putAll(services)
   }
 
-  void putAll(serviceCollection) {
-    serviceCollection.each {
+  void putAll(services) {
+    services.each {
       setService it.key, it.value
     }
   }
@@ -56,7 +50,7 @@ class Groomple {
     setProperty(service, new ProtectedService(callable))
   }
 
-  private isCallable(Object object) {
-    return object instanceof Closure || object instanceof SharedService || object instanceof ProtectedService
+  private boolean isCallable(object) {
+    object instanceof Closure || object instanceof SharedService || object instanceof ProtectedService
   }
 }
