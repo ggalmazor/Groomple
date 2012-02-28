@@ -3,6 +3,8 @@ bin
 .idea
 target
 Groomple.iml
+Groomple.ipr
+Groomple.iws
 out
 .gradle
 build
