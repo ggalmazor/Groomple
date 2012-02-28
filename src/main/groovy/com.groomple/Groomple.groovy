@@ -5,9 +5,9 @@ import com.groomple.service.SharedService
 
 class Groomple {
   @Delegate Map services = [:]
-
+  
   def getService(String name) {
-    if (!services.containsKey(name))
+    if (!contains(name))
       throw new UnknownServiceException("Service ${name} is not defined")
     isCallable(services[name]) ? services[name].call() : services[name]
   }
@@ -52,5 +52,9 @@ class Groomple {
 
   private boolean isCallable(object) {
     object instanceof Closure || object instanceof SharedService || object instanceof ProtectedService
+  }
+
+  private boolean contains(String stuff) {
+    services.containsKey stuff
   }
 }
