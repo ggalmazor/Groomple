@@ -1,13 +1,11 @@
 package com.groomple.service
 
-class ProtectedService {
-	Closure callable
+class ProtectedService extends Service {
+  ProtectedService(Closure callable) {
+    super(callable)
+  }
 
-	ProtectedService(Closure callable) {
-		this.callable = callable
-	}
-	
-	Object call() {
-		return callable
-	}
+  def call() {
+    callable
+  }
 }
